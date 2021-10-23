@@ -10,11 +10,11 @@ namespace BloggerDotNet.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BlogController : ControllerBase
+    public class BlogsController : ControllerBase
     {
     private readonly BlogService _blogService;
 
-        public BlogController(BlogService blogService)
+        public BlogsController(BlogService blogService)
         {
             _blogService = blogService;
         }
