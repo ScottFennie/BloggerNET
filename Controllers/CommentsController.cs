@@ -10,22 +10,22 @@ namespace BloggerDotNet.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BlogsController : ControllerBase
+    public class CommentsController : ControllerBase
     {
-    private readonly BlogService _blogService;
+    private readonly CommentsService _commentsService;
 
-        public BlogsController(BlogService blogService)
+        public CommentsController(CommentsService commentsService)
         {
-            _blogService = blogService;
+            _commentsService = commentsService;
         }
 
-    [HttpGet]
+        [HttpGet]
 
-   public ActionResult<List<Blog>> GetAll()
+   public ActionResult<List<Comment>> GetAll()
    {
      try
      {
-        return Ok(_blogService.GetAll());
+        return Ok(_commentsService.GetAll());
      }
      catch (System.Exception e)
      {
@@ -33,13 +33,13 @@ namespace BloggerDotNet.Controllers
      }
    }
 
-     [HttpGet("{blogId}")]
+     [HttpGet("{commentId}")]
 
-    public ActionResult<Blog> GetById(int blogId)
+    public ActionResult<Comment> GetById(int commentId)
     {
       try
       {
-          return Ok(_blogService.GetById(blogId));
+          return Ok(_commentsService.GetById(commentId));
       }
       catch (System.Exception e)
       {
@@ -50,16 +50,16 @@ namespace BloggerDotNet.Controllers
     [Authorize]
     [HttpPost]
 
-    public async Task<ActionResult<Blog>> Post([FromBody] Blog blogData)
+    public async Task<ActionResult<Comment>> Post([FromBody] Comment commentData)
     {
       try
       {
           Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
           // for node reference - req.body.creatorId = req.userInfo.id
           // FIXME NEVER TRUST THE CLIENT
-          blogData.CreatorId = userInfo.Id;
-          Blog createdBlog = _blogService.Post(blogData);
-          return createdBlog;
+          commentData.CreatorId = userInfo.Id;
+          Comment createdComment = _commentsService.Post(commentData);
+          return createdComment;
       }
       catch (System.Exception e)
       {
@@ -69,15 +69,15 @@ namespace BloggerDotNet.Controllers
 
 
     [Authorize]
-    [HttpDelete("{blogId}")]
+    [HttpDelete("{commentId}")]
 
-    public async Task<ActionResult<string>> RemoveBLog(int blogId)
+    public async Task<ActionResult<string>> RemoveComment(int commentId)
     {
       try
       {
           Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-          _blogService.RemoveBlog(blogId, userInfo.Id);
-          return Ok("Your blog was deleted successfully");
+          _commentsService.RemoveComment(commentId, userInfo.Id);
+          return Ok("Your comment was deleted successfully");
       }
       catch (System.Exception e)
       {
@@ -85,13 +85,13 @@ namespace BloggerDotNet.Controllers
       }
     }
      [Authorize]
-     [HttpPut("{blogId}")]
-    public ActionResult<Blog> EditBlog(int blogId, [FromBody] Blog blogData)
+     [HttpPut("{commentId}")]
+    public ActionResult<Comment> EditComment(int commentId, [FromBody] Comment commentData)
     {
       try
       {
-        var blog = _blogService.Edit(blogId, blogData);
-        return Ok(blog);
+        var comment = _commentsService.Edit(commentId, commentData);
+        return Ok(comment);
       }
       catch (System.Exception error)
       {
