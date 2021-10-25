@@ -49,7 +49,7 @@ namespace BloggerDotNet.Controllers
     [Authorize]
     [HttpPost]
 
-    public async Task<ActionResult<Comment>> Post([FromBody] Comment commentData)
+    public async Task<ActionResult<Comment>> Post([FromBody] Comment commentData, int blogId)
     {
       try
       {
@@ -57,7 +57,7 @@ namespace BloggerDotNet.Controllers
           // for node reference - req.body.creatorId = req.userInfo.id
           // FIXME NEVER TRUST THE CLIENT
           commentData.CreatorId = userInfo.Id;
-          Comment createdComment = _commentsService.Post(commentData);
+          Comment createdComment = _commentsService.Post(commentData, blogId);
           return createdComment;
       }
       catch (System.Exception e)

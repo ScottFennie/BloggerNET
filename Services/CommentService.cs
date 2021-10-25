@@ -18,7 +18,6 @@ namespace BloggerDotNet.Services
     // Gets all comments by the blogId
     public List<Comment> GetByBlogId(int blogId)
     {
-      var blog = _blogService.GetById(blogId);
       return _commentsRepository.GetByBlogId(blogId);
     }
      public Comment GetById(int commentId)
@@ -26,10 +25,7 @@ namespace BloggerDotNet.Services
       return _commentsRepository.GetById(commentId);
     }
 
-    public Comment Post(Comment commentData)
-    {
-      return _commentsRepository.Post(commentData);
-    }
+    
 
     public void RemoveComment(int commentId, string userId)
     {
@@ -39,6 +35,11 @@ namespace BloggerDotNet.Services
         throw new Exception("That is not your comment");
       }
       _commentsRepository.RemoveComment(commentId);
+    }
+
+    public Comment Post(Comment commentData, int blogId)
+    {
+      return _commentsRepository.Post(commentData, blogId);
     }
 
     public Comment Edit(int commentId, Comment commentData)

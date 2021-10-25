@@ -21,33 +21,36 @@ namespace BloggerDotNet.Repositories
         .QueryFirstOrDefault<Comment>("SELECT * FROM comments WHERE id = @id", new { id });
     }
 
-    internal List<Comment> GetByBlogId(int blogId)
+    internal List<Comment> GetByBlogId(int Blog)
     {
       var sql = @"
       SELECT *
       FROM comments c
-      WHERE c.blogId = @blogId
+      WHERE c.blog = @Blog
       ";
-      return _db.Query<Comment>(sql, new { blogId }).ToList();
+      return _db.Query<Comment>(sql, new { Blog }).ToList();
     }
 
 
-    public Comment Post(Comment commentData)
+    public Comment Post(Comment commentData, int blogId)
     {
 
       var sql = @"
         INSERT INTO comments(
           body,
-          creatorId
+          creatorId,
+          blog
         )
         VALUES (
           @Body,
-          @CreatorId
+          @CreatorId,
+          @Blog
         );
         SELECT LAST_INSERT_ID();
       ";
       var id = _db.ExecuteScalar<int>(sql, commentData);
       commentData.Id = id;
+      // commentData.Blog = blogId;
       return commentData;
     }
 

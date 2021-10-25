@@ -11,6 +11,7 @@ namespace BloggerDotNet.Services
         public BlogService(BlogRepository blogRepository)
         {
             _blogRepository = blogRepository;
+          
         }
 
     public List<Blog> GetAll()
@@ -27,6 +28,7 @@ namespace BloggerDotNet.Services
       }
       return foundBlog;
     }
+
 
     public Blog Post(Blog blogData)
     {

@@ -10,6 +10,6 @@ namespace BloggerDotNet
         [MaxLength(240)]
         public string Body { get; set; }
         [Required]
-        public int BlogId { get; set; }
+        public int Blog { get; set; }
     }
 }
