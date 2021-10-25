@@ -7,25 +7,23 @@ namespace BloggerDotNet.Services
     public class CommentsService
     {
     private readonly CommentsRepository _commentsRepository;
+    private readonly BlogService _blogService;
 
-        public CommentsService(CommentsRepository commentsRepository)
+        public CommentsService(CommentsRepository commentsRepository, BlogService blogService)
         {
             _commentsRepository = commentsRepository;
+            _blogService = blogService;
         }
 
-    public List<Comment> GetAll()
+    // Gets all comments by the blogId
+    public List<Comment> GetByBlogId(int blogId)
     {
-      return _commentsRepository.GetAll();
+      var blog = _blogService.GetById(blogId);
+      return _commentsRepository.GetByBlogId(blogId);
     }
-
      public Comment GetById(int commentId)
     {
-      Comment foundComment = _commentsRepository.GetById(commentId);
-      if(foundComment == null)
-      {
-        throw new Exception("Sorry there is no comment by that Id :(");
-      }
-      return foundComment;
+      return _commentsRepository.GetById(commentId);
     }
 
     public Comment Post(Comment commentData)
@@ -52,7 +50,5 @@ namespace BloggerDotNet.Services
       _commentsRepository.Edit(commentId, commentData);
       return comment;
     }
-
-
     }
 }

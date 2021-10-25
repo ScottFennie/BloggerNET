@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using BloggerDotNet.Models;
 using Dapper;
 
 namespace BloggerDotNet.Repositories
@@ -15,77 +14,60 @@ namespace BloggerDotNet.Repositories
             _db = db;
         }
 
-    internal List<Blog> GetAll()
+ 
+    public Comment GetById(int id)
     {
-      string sql = @"
-      SELECT * FROM blogs;
+      return _db
+        .QueryFirstOrDefault<Comment>("SELECT * FROM comments WHERE id = @id", new { id });
+    }
+
+    internal List<Comment> GetByBlogId(int blogId)
+    {
+      var sql = @"
+      SELECT *
+      FROM comments c
+      WHERE c.blogId = @blogId
       ";
-      return _db.Query<Blog>(sql).ToList();
+      return _db.Query<Comment>(sql, new { blogId }).ToList();
     }
 
 
-   internal Blog GetById(int blogId)
-    {
-      string sql = @"
-      SELECT
-      b.*,
-      a.*
-      FROM blogs b
-      JOIN accounts a on b.creatorId = a.id
-      WHERE b.id = @blogId;
-      ";
-      return _db.Query<Blog, Account, Blog>(sql, (b, a) =>
-      {
-        b.Creator = a;
-        return b;
-      }, new{blogId}).FirstOrDefault();
-    }
-
-    public Blog Post(Blog blogData)
+    public Comment Post(Comment commentData)
     {
 
       var sql = @"
-        INSERT INTO blogs(
-          title,
+        INSERT INTO comments(
           body,
-          imgUrl,
-          published,
           creatorId
         )
         VALUES (
-          @Title,
           @Body,
-          @ImgUrl,
-          @Published,
           @CreatorId
         );
         SELECT LAST_INSERT_ID();
       ";
-      var id = _db.ExecuteScalar<int>(sql, blogData);
-      blogData.Id = id;
-      return blogData;
+      var id = _db.ExecuteScalar<int>(sql, commentData);
+      commentData.Id = id;
+      return commentData;
     }
 
-    public Blog Edit(int id, Blog blogData)
+    public Comment Edit(int id, Comment commentData)
     {
-      blogData.Id = id;
+      commentData.Id = id;
       var sql = @"
-        UPDATE blogs
+        UPDATE comments
         SET
-          title = @Title,
-          body = @Body,
-          imgUrl = @ImgUrl,
-          published = @Published
+        body = @Body,
         WHERE id = @Id;
       ";
 
-      _db.Execute(sql, blogData);
-      return blogData;
+      _db.Execute(sql, commentData);
+      return commentData;
     }
 
     public void RemoveComment(int id)
     {
-      var rowsAffected = _db.Execute("DELETE FROM blogs WHERE id = @id", new { id });
+      var rowsAffected = _db.Execute("DELETE FROM comments WHERE id = @id", new { id });
     }
 
 

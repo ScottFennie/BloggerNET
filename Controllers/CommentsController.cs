@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using BloggerDotNet.Models;
 using BloggerDotNet.Services;
@@ -21,17 +20,17 @@ namespace BloggerDotNet.Controllers
 
         [HttpGet]
 
-   public ActionResult<List<Comment>> GetAll()
-   {
-     try
-     {
-        return Ok(_commentsService.GetAll());
-     }
-     catch (System.Exception e)
-     {
-        return BadRequest(e.Message);
-     }
-   }
+  //  public ActionResult<List<Comment>> GetAll()
+  //  {
+  //    try
+  //    {
+  //       return Ok(_commentsService.GetAll());
+  //    }
+  //    catch (System.Exception e)
+  //    {
+  //       return BadRequest(e.Message);
+  //    }
+  //  }
 
      [HttpGet("{commentId}")]
 
