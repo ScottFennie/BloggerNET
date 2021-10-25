@@ -57,7 +57,7 @@ namespace BloggerDotNet.Repositories
       var sql = @"
         UPDATE comments
         SET
-        body = @Body,
+        body = @Body
         WHERE id = @Id;
       ";
 
