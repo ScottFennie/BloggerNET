@@ -18,6 +18,10 @@ namespace BloggerDotNet.Services
     {
       return _blogRepository.GetAll();
     }
+    public List<Blog> GetAllByAccount(string userId)
+    {
+      return _blogRepository.GetAllByAccount(userId);
+    }
 
      public Blog GetById(int blogId)
     {
@@ -58,6 +62,9 @@ namespace BloggerDotNet.Services
       return blog;
     }
 
-
+        internal object GetAllByAccount(object id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

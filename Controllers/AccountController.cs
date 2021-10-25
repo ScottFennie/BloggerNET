@@ -14,10 +14,15 @@ namespace BloggerDotNet.Controllers
     public class AccountController : ControllerBase
     {
         private readonly AccountService _accountService;
+        private readonly BlogService _blogService;
 
-        public AccountController(AccountService accountService)
+        private readonly CommentsService _commentsService;
+
+        public AccountController(AccountService accountService, BlogService blogService, CommentsService commentsService)
         {
             _accountService = accountService;
+            _blogService = blogService;
+            _commentsService = commentsService;
         }
 
         [HttpGet]
@@ -34,7 +39,35 @@ namespace BloggerDotNet.Controllers
                 return BadRequest(e.Message);
             }
         }
-    }
+        
+    [HttpGet("blogs")]
+    public async Task<ActionResult<List<Blog>>> GetAllByAccountAsync()
+   {
+     try
+     {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        return Ok(_blogService.GetAllByAccount(userInfo.Id));
+     }
+     catch (System.Exception e)
+     {
+        return BadRequest(e.Message);
+     }
+   }
+    [HttpGet("comments")]
+    public async Task<ActionResult<List<Comment>>> GetAllCommentsByAccountAsync()
+   {
+     try
+     {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        return Ok(_commentsService.GetAllCommentsByAccount(userInfo.Id));
+     }
+     catch (System.Exception e)
+     {
+        return BadRequest(e.Message);
+     }
+   }
 
+
+    }
 
 }

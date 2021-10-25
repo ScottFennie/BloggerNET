@@ -30,6 +30,13 @@ namespace BloggerDotNet.Repositories
       ";
       return _db.Query<Comment>(sql, new { Blog }).ToList();
     }
+    internal List<Comment> GetAllCommentsByAccount(string uId)
+    {
+      string sql = @"
+      SELECT * FROM comments WHERE creatorId = @uId;
+      ";
+      return _db.Query<Comment>(sql, new {uId}).ToList();
+    }
 
 
     public Comment Post(Comment commentData, int blogId)

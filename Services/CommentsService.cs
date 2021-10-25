@@ -25,6 +25,10 @@ namespace BloggerDotNet.Services
       return _commentsRepository.GetById(commentId);
     }
 
+  public List<Comment> GetAllCommentsByAccount(string userId)
+  {
+      return _commentsRepository.GetAllCommentsByAccount(userId);
+  }
     
 
     public void RemoveComment(int commentId, string userId)

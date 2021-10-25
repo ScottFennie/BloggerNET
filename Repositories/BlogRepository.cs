@@ -22,6 +22,13 @@ namespace BloggerDotNet.Repositories
       ";
       return _db.Query<Blog>(sql).ToList();
     }
+    internal List<Blog> GetAllByAccount(string uId)
+    {
+      string sql = @"
+      SELECT * FROM blogs WHERE creatorId = @uId;
+      ";
+      return _db.Query<Blog>(sql, new {uId}).ToList();
+    }
 
 
    internal Blog GetById(int blogId)
